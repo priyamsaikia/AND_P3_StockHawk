@@ -39,32 +39,10 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        String url = "https://query.yahooapis.com/v1/public/yql?q=";
+        String url = String.format(AppConstants.REQUEST_STOCK_HISTORY,getIntent().getStringExtra(AppConstants.BUNDLE_STOCK));
 
-//        ArrayList<Entry> entries = new ArrayList<>();
-//        entries.add(new Entry(4f, 0));
-//        entries.add(new Entry(8f, 1));
-//        entries.add(new Entry(6f, 2));
-//        entries.add(new Entry(2f, 3));
-//        entries.add(new Entry(18f, 4));
-//        entries.add(new Entry(9f, 5));
-//
-//        LineDataSet dataset = new LineDataSet(entries, "# of Calls");
-//
-//        ArrayList<String> labels = new ArrayList<String>();
-//        labels.add("January");
-//        labels.add("February");
-//        labels.add("March");
-//        labels.add("April");
-//        labels.add("May");
-//        labels.add("June");
-//
-//        LineData data = new LineData(labels, dataset);
-//        lineChart.setData(data); // set the data and list of lables into chart
-
-
-        VolleyRequest.sendRequest(this, url +
-                        URLEncoder.encode(AppConstants.REQUEST_STOCK_HISTORY)
+        VolleyRequest.sendRequest(this, AppConstants.BASE_URL_HISTORY +
+                        URLEncoder.encode(url)
                         + AppConstants.URL_FINALISER_HISTORY
                 , this, 0);
     }
@@ -78,14 +56,14 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
 
     private void setUpGraph(ArrayList<HistoryStockBean> arrayList) {
         ArrayList<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < arrayList.size(); i++)
             entries.add(new Entry(Float.valueOf(arrayList.get(i).getAdjusted_close()), i));
         Log.d(TAG, "entries added");
 
         LineDataSet dataset = new LineDataSet(entries, "History of finance");
 
         ArrayList<String> labels = new ArrayList<String>();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < arrayList.size(); i++)
             labels.add(arrayList.get(i).getDate());
 
         LineData data = new LineData(labels, dataset);
