@@ -88,11 +88,11 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
                     @Override
                     public void onItemClick(View v, int position) {
                         //TODO:
+                        Cursor c = mCursor;
+                        c.moveToPosition(position);
 
-                        // do something on item click
-                        long item = mCursorAdapter.getItemId(position);
-                        Intent intent=new Intent(MyStocksActivity.this, DetailActivity.class);
-                        intent.putExtra(AppConstants.BUNDLE_STOCK,"YHOO");
+                        Intent intent = new Intent(MyStocksActivity.this, DetailActivity.class);
+                        intent.putExtra(AppConstants.BUNDLE_STOCK, c.getString(c.getColumnIndex("symbol")));
                         startActivity(intent);
                     }
                 }));

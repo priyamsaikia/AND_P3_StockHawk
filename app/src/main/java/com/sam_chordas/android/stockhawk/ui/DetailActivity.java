@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -33,6 +34,8 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
     private static final String TAG = DetailActivity.class.getSimpleName();
     @Bind(R.id.linechart)
     LineChart lineChart;
+    @Bind(R.id.helloworld)
+    TextView helloworld;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +44,7 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         ButterKnife.bind(this);
         String url = String.format(AppConstants.REQUEST_STOCK_HISTORY,getIntent().getStringExtra(AppConstants.BUNDLE_STOCK));
 
+        helloworld.setText(getIntent().getStringExtra(AppConstants.BUNDLE_STOCK));
         VolleyRequest.sendRequest(this, AppConstants.BASE_URL_HISTORY +
                         URLEncoder.encode(url)
                         + AppConstants.URL_FINALISER_HISTORY
