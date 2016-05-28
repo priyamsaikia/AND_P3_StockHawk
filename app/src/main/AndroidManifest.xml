@@ -45,6 +45,34 @@
             android:authorities="com.sam_chordas.android.stockhawk.data.QuoteProvider"
             android:exported="false" />
 
+        <!--start of widget-->
+        <receiver
+            android:name=".widget.AppWidgetProvider"
+            android:label="MyWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/app_widget_provider_info" />
+        </receiver>
+        <!--<receiver-->
+            <!--android:name=".widget.AppWidgetProvider"-->
+            <!--android:label="MyWidget">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
+                <!--<action android:name="com.example.android.sunshine.app.ACTION_DATA_UPDATED" />-->
+            <!--</intent-filter>-->
+            <!--<meta-data android:name="android.appwidget.provider"-->
+                <!--android:resource="@xml/app_widget_provider_info" />-->
+        <!--</receiver>-->
+
+        <service
+            android:name=".widget.AppRemoteViewsService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <!--end of widget-->
+
     </application>
 
 </manifest>
