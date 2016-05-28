@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -23,9 +25,11 @@ import com.sam_chordas.android.stockhawk.service.VolleyRequest;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by PriyamSaikia on 21-05-2016.
@@ -36,19 +40,47 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
     LineChart lineChart;
     @Bind(R.id.helloworld)
     TextView helloworld;
+    private String mSymbol;
+    private String mStartDate;
+    private String mEndDate;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-        String url = String.format(AppConstants.REQUEST_STOCK_HISTORY,getIntent().getStringExtra(AppConstants.BUNDLE_STOCK));
+        Calendar now = Calendar.getInstance();
+        String month = String.valueOf(now.get(Calendar.MONTH));
+        if (month.length() > 1) {
+
+        } else {
+            month = "0" + month;
+        }
+        mStartDate = now.get(Calendar.YEAR) + "-" + month + "-" + 01;
+        mEndDate = now.get(Calendar.YEAR) + "-" + month + "-" + 28;
 
         helloworld.setText(getIntent().getStringExtra(AppConstants.BUNDLE_STOCK));
+        mSymbol = getIntent().getStringExtra(AppConstants.BUNDLE_STOCK);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        getDetailedGraph();
+    }
+
+    private void getDetailedGraph() {
+        String url = String.format(AppConstants.REQUEST_STOCK_HISTORY, mSymbol, mStartDate, mEndDate);
         VolleyRequest.sendRequest(this, AppConstants.BASE_URL_HISTORY +
                         URLEncoder.encode(url)
                         + AppConstants.URL_FINALISER_HISTORY
                 , this, 0);
+    }
+
+    @OnClick(R.id.tv_btn_switch)
+    public void onSwitchClick(View view) {
+        //todo: switch timelimit
+        getDetailedGraph();
     }
 
     @Override
@@ -60,14 +92,13 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
 
     private void setUpGraph(ArrayList<HistoryStockBean> arrayList) {
         ArrayList<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < arrayList.size(); i++)
+        for (int i = arrayList.size()-1; i >= 0; i--)
             entries.add(new Entry(Float.valueOf(arrayList.get(i).getAdjusted_close()), i));
-        Log.d(TAG, "entries added");
 
         LineDataSet dataset = new LineDataSet(entries, "History of finance");
 
         ArrayList<String> labels = new ArrayList<String>();
-        for (int i = 0; i < arrayList.size(); i++)
+        for (int i = arrayList.size()-1; i >= 0; i--)
             labels.add(arrayList.get(i).getDate());
 
         LineData data = new LineData(labels, dataset);
