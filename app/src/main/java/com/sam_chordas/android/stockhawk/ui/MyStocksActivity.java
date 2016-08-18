@@ -96,7 +96,7 @@ public class MyStocksActivity extends AppCompatActivity implements LoaderManager
 
                         Intent intent = new Intent(MyStocksActivity.this, DetailActivity.class);
                         intent.putExtra(AppConstants.BUNDLE_STOCK, c.getString(c.getColumnIndex("symbol")));
-                        startAesslectivity(intent);
+                        startActivity(intent);
                     }
                 }));
         //todo: check for emptiness, insert zero state
