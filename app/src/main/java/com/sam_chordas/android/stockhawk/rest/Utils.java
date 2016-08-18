@@ -33,6 +33,9 @@ public class Utils {
                 if (count == 1) {
                     jsonObject = jsonObject.getJSONObject("results")
                             .getJSONObject("quote");
+                    Log.d("json = ",jsonObject.toString());
+                    if (jsonObject.getString("Bid") == null || jsonObject.getString("Bid").equals("null"))
+                        return null;
                     batchOperations.add(buildBatchOperation(jsonObject));
                 } else {
                     resultsArray = jsonObject.getJSONObject("results").getJSONArray("quote");
@@ -40,6 +43,8 @@ public class Utils {
                     if (resultsArray != null && resultsArray.length() != 0) {
                         for (int i = 0; i < resultsArray.length(); i++) {
                             jsonObject = resultsArray.getJSONObject(i);
+                            if (jsonObject.getString("Bid") == null || jsonObject.getString("Bid").equals("null"))
+                                continue;
                             batchOperations.add(buildBatchOperation(jsonObject));
                         }
                     }

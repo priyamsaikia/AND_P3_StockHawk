@@ -2,12 +2,12 @@ package com.sam_chordas.android.stockhawk.service;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.OperationApplicationException;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.os.RemoteException;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.GcmTaskService;
@@ -15,13 +15,11 @@ import com.google.android.gms.gcm.TaskParams;
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.rest.AppConstants;
 import com.sam_chordas.android.stockhawk.rest.Utils;
 import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -124,31 +122,23 @@ public class StockTaskService extends GcmTaskService {
                 getResponse = fetchData(urlString);
                 result = GcmNetworkManager.RESULT_SUCCESS;
                 try {
-                    JSONObject jsonObject = new JSONObject(getResponse);
-                    JSONObject queryObj = jsonObject.getJSONObject("query");
-                    JSONObject resultsObj = queryObj.getJSONObject("results");
-                    JSONObject quote = resultsObj.getJSONObject("quote");
-                    String bidPrice = quote.getString("Bid");
-                    if (bidPrice != null && !bidPrice.equals("null")) {
-                        try {
-                            ContentValues contentValues = new ContentValues();
-                            // update ISCURRENT to 0 (false) so new data is current
-                            if (isUpdate) {
-                                contentValues.put(QuoteColumns.ISCURRENT, 0);
-                                mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
-                                        null, null);
-                            }
-                            mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
-                                    Utils.quoteJsonToContentVals(getResponse));
-                        } catch (RemoteException | OperationApplicationException e) {
-                            Log.e(LOG_TAG, "Error applying batch insert", e);
-                        }
-                    } else {
-                        Log.d(TAG, "stock not found!");
-                        Toast.makeText(mContext, mContext.getText(R.string.stock_not_found), Toast.LENGTH_SHORT).show();
+                    ContentValues contentValues = new ContentValues();
+                    // update ISCURRENT to 0 (false) so new data is current
+                    if (isUpdate) {
+                        contentValues.put(QuoteColumns.ISCURRENT, 0);
+                        mContext.getContentResolver().update(QuoteProvider.Quotes.CONTENT_URI, contentValues,
+                                null, null);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+
+                    if (Utils.quoteJsonToContentVals(getResponse) != null && Utils.quoteJsonToContentVals(getResponse).size() > 0) {
+                        Log.d(LOG_TAG, "quoteJsonToContentVals() called 139");
+                        mContext.getContentResolver().applyBatch(QuoteProvider.AUTHORITY,
+                                Utils.quoteJsonToContentVals(getResponse));
+                    } else {
+                        Log.d(TAG, "stock not found");
+                    }
+                } catch (RemoteException | OperationApplicationException e) {
+                    Log.e(LOG_TAG, "Error applying batch insert", e);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
