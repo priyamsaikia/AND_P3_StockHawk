@@ -14,4 +14,5 @@
     <string name="content_desc_recyclerview" translatable="true">List of stocks</string>
     <string name="empty_listview" translatable="true">No Stock Information Available at the moment, are you sure your device is connected to the internet?</string>
     <string name="switch_btn" translatable="true">SWITCH</string>
+    <string name="problem">Oops! looks like there\'s some problem!</string>
 </resources>

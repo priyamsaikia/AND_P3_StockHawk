@@ -18,7 +18,7 @@
             android:layout_alignParentLeft="true"
             android:layout_gravity="center"
             android:padding="@dimen/basePadding"
-            tools:text="hello darli" />
+            tools:text="hello darling" />
 
         <TextView
             android:id="@+id/tv_btn_switch"
@@ -27,12 +27,19 @@
             android:layout_alignParentRight="true"
             android:background="@drawable/switch_selector"
             android:padding="@dimen/basePadding"
-            android:text="@string/switch_btn" />
+            android:text="@string/switch_btn"
+            android:visibility="gone" />
 
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/linechart"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:layout_below="@id/helloworld" />
+
+        <ProgressBar
+            android:id="@+id/progressbar_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 </ScrollView>

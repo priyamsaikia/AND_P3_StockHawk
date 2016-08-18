@@ -5,7 +5,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -40,6 +42,8 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
     LineChart lineChart;
     @Bind(R.id.helloworld)
     TextView helloworld;
+    @Bind(R.id.progressbar_detail)
+    ProgressBar progressBar;
     private String mSymbol;
     private String mStartDate;
     private String mEndDate;
@@ -49,10 +53,11 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        lineChart.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
         Calendar now = Calendar.getInstance();
         String month = String.valueOf(now.get(Calendar.MONTH));
         if (month.length() > 1) {
-
         } else {
             month = "0" + month;
         }
@@ -87,18 +92,20 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
     public void onSuccess(String response, int requestId) {
         Parser parser = new Parser();
         ArrayList<HistoryStockBean> arrayList = parser.getHistoryData(response);
+        lineChart.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
         setUpGraph(arrayList);
     }
 
     private void setUpGraph(ArrayList<HistoryStockBean> arrayList) {
         ArrayList<Entry> entries = new ArrayList<>();
-        for (int i = arrayList.size()-1; i >= 0; i--)
+        for (int i = arrayList.size() - 1; i >= 0; i--)
             entries.add(new Entry(Float.valueOf(arrayList.get(i).getAdjusted_close()), i));
 
         LineDataSet dataset = new LineDataSet(entries, "History of finance");
 
         ArrayList<String> labels = new ArrayList<String>();
-        for (int i = arrayList.size()-1; i >= 0; i--)
+        for (int i = arrayList.size() - 1; i >= 0; i--)
             labels.add(arrayList.get(i).getDate());
 
         LineData data = new LineData(labels, dataset);
@@ -108,6 +115,8 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
 
     @Override
     public void onFailure(String error, int requestId) {
-
+        Toast.makeText(this, getText(R.string.problem), Toast.LENGTH_SHORT).show();
+        lineChart.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
     }
 }
