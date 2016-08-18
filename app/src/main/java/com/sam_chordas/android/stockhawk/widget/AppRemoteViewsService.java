@@ -47,8 +47,8 @@ public class AppRemoteViewsService extends RemoteViewsService {
             if (mCursor != null) {
                 mCursor.close();
             }
-            mCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI, null, null,
-                    null, null);
+            mCursor = mContext.getContentResolver().query(QuoteProvider.Quotes.CONTENT_URI, null, QuoteColumns.ISCURRENT + "=?",
+                    new String[]{"1"}, null);
         }
 
         @Override
