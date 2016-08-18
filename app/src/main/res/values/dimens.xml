@@ -11,4 +11,5 @@
   <dimen name="body">18sp</dimen>
   <dimen name="doubleBasePadding">32dp</dimen>
   <dimen name="basePadding">16dp</dimen>
+  <dimen name="baseSmallerPadding">10dp</dimen>
 </resources>
