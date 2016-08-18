@@ -29,14 +29,18 @@ public class AppWidgetProvider extends android.appwidget.AppWidgetProvider {
             serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetID);
             remoteViews.setRemoteAdapter(R.id.listview_widget, serviceIntent);
             appWidgetManager.updateAppWidget(appWidgetID, remoteViews);
-            Intent intent=new Intent(context, DetailActivity.class);
-            PendingIntent pendingIntentTemplate= TaskStackBuilder.create(context)
-                    .addNextIntentWithParentStack(intent)
-                    .getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
-            remoteViews.setPendingIntentTemplate(R.id.listview_widget,pendingIntentTemplate);
-            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetID,R.id.listview_widget);
-        }
+//            Intent intent=new Intent(context, DetailActivity.class);
+//            PendingIntent pendingIntentTemplate= TaskStackBuilder.create(context)
+//                    .addNextIntentWithParentStack(intent)
+//                    .getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+//            remoteViews.setPendingIntentTemplate(R.id.ll_item_widget,pendingIntentTemplate);
 
+            Intent launchIntent = new Intent(context, DetailActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+            remoteViews.setOnClickPendingIntent(R.id.ll_item_widget, pendingIntent);
+
+            appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetID,R.id.ll_item_widget);
+        }
     }
 
     @Override

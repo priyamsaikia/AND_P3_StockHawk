@@ -5,12 +5,14 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.sam_chordas.android.stockhawk.R;
 import com.sam_chordas.android.stockhawk.data.QuoteColumns;
 import com.sam_chordas.android.stockhawk.data.QuoteProvider;
+import com.sam_chordas.android.stockhawk.rest.AppConstants;
 import com.sam_chordas.android.stockhawk.ui.DetailActivity;
 
 /**
@@ -80,11 +82,9 @@ public class AppRemoteViewsService extends RemoteViewsService {
                 }
             }
 
-            Intent configIntent = new Intent(AppRemoteViewsService.this, DetailActivity.class);
-
-            PendingIntent configPendingIntent = PendingIntent.getActivity(AppRemoteViewsService.this, 0, configIntent, 0);
-
-            remoteViews.setOnClickPendingIntent(R.id.ll_item_widget, configPendingIntent);
+            Intent configIntent = new Intent();
+            configIntent.putExtra(AppConstants.BUNDLE_STOCK,mCursor.getString(mCursor.getColumnIndex(QuoteColumns.SYMBOL)));
+            remoteViews.setOnClickFillInIntent(R.id.ll_item_widget, configIntent);
             return remoteViews;
         }
 
