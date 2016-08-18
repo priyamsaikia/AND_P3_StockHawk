@@ -28,7 +28,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.DetailActivity" />
+        <activity
+            android:name=".ui.DetailActivity"
+            android:screenOrientation="landscape" />
 
         <service
             android:name="com.sam_chordas.android.stockhawk.service.StockTaskService"

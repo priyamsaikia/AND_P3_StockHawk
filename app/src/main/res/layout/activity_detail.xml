@@ -16,6 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_gravity="center"
             android:padding="@dimen/basePadding"
             tools:text="hello darling" />
@@ -24,6 +25,7 @@
             android:id="@+id/tv_btn_switch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:background="@drawable/switch_selector"
             android:padding="@dimen/basePadding"

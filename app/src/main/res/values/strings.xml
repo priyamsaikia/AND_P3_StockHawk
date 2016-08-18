@@ -1,8 +1,5 @@
 <resources>
     <string name="app_name" translatable="false">Stock Hawk</string>
-
-    <string name="action_example">Example action</string>
-
     <string name="action_settings" translatable="true">Settings</string>
     <string name="action_change_units" translatable="true">Change Units</string>
     <string name="symbol_search" translatable="true">Symbol Search</string>
@@ -14,6 +11,7 @@
     <string name="content_desc_recyclerview" translatable="true">List of stocks</string>
     <string name="empty_listview" translatable="true">No Stock Information Available at the moment, are you sure your device is connected to the internet?</string>
     <string name="switch_btn" translatable="true">SWITCH</string>
-    <string name="problem">Oops! looks like there\'s some problem!</string>
-    <string name="stock_not_found">Oops! Stock Not Found</string>
+    <string name="problem" translatable="true">Oops! looks like there\'s some problem!</string>
+    <string name="stock_not_found" translatable="true">Oops! Stock Not Found</string>
+    <string name="history" translatable="true">History of finance during current month</string>
 </resources>

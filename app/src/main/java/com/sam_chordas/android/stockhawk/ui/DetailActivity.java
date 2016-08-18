@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -53,6 +54,8 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         lineChart.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
         Calendar now = Calendar.getInstance();
@@ -84,7 +87,6 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
 
     @OnClick(R.id.tv_btn_switch)
     public void onSwitchClick(View view) {
-        //todo: switch timelimit
         getDetailedGraph();
     }
 
@@ -102,7 +104,7 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         for (int i = arrayList.size() - 1; i >= 0; i--)
             entries.add(new Entry(Float.valueOf(arrayList.get(i).getAdjusted_close()), i));
 
-        LineDataSet dataset = new LineDataSet(entries, "History of finance");
+        LineDataSet dataset = new LineDataSet(entries, this.getText(R.string.history) + "");
 
         ArrayList<String> labels = new ArrayList<String>();
         for (int i = arrayList.size() - 1; i >= 0; i--)
@@ -118,5 +120,12 @@ public class DetailActivity extends AppCompatActivity implements MyConnection.IM
         Toast.makeText(this, getText(R.string.problem), Toast.LENGTH_SHORT).show();
         lineChart.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home)
+            finish();
+        return super.onOptionsItemSelected(item);
     }
 }
