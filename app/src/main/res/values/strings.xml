@@ -14,4 +14,5 @@
     <string name="problem" translatable="true">Oops! looks like there\'s some problem!</string>
     <string name="stock_not_found" translatable="true">Oops! Stock Not Found</string>
     <string name="history" translatable="true">History of finance during current month</string>
+    <string name="stock_already_exists">This stock is already saved!</string>
 </resources>
